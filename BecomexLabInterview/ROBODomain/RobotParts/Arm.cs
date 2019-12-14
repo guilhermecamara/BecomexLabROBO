@@ -1,4 +1,4 @@
-﻿using ROBODomain.StateMachine;
+﻿using ROBODomain.RobotStateMachine;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,9 +7,15 @@ namespace ROBODomain.RobotParts
 {
     public class Arm : IArm
     {
-        public string Identifier { get; set; }
-        public IObservableStateMachine ObservableStateMachine { get; }
-        public IObserverStateMachine ObserverStateMachine { get; }
+        public int Id { get; set; }
+        public IObservableStateMachine ElbowStateMachine { get; }
+        public IObserverStateMachine WristStateMachine { get; }
         public BodySideEnum BodySide { get ; set; }
+
+        public Arm(IObservableStateMachine elbowStateMachine, IObserverStateMachine wristStateMachine)
+        {
+            ElbowStateMachine = elbowStateMachine;
+            WristStateMachine = wristStateMachine;
+        }
     }
 }

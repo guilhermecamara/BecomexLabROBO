@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ROBODomain.StateMachine {
+namespace ROBODomain.RobotStateMachine {
     public class StateMachine : IStateMachine 
     {
         private IEnumerable<IState> _states { get; set; }
         private int _currentState { get; set; }
-        public bool CanModify { get; protected set; }
+        public bool CanModify { get; set; }
 
-        public StateMachine(IEnumerable<IState> states, int initialState) 
+        /// <summary>
+        /// Always initializes with resting state. If the resting state is not provided in the states list, throws an exception.
+        /// </summary>
+        /// <param name="states">List of possible states for this state machine</param>
+        public StateMachine(IEnumerable<IState> states) 
         {
+            if (states.Any(s => s.StateName == StateEnum.Resting) == false)
+                throw new ArgumentException("Missing Resting IState");
+
             _states = states;
-            _currentState = initialState;
+            _currentState = _states.ToList().FindIndex(0, s => s.StateName == StateEnum.Resting);
         }
 
         public IState GetState() 
@@ -36,7 +43,6 @@ namespace ROBODomain.StateMachine {
         {
             if (CanModify && _currentState > 0) 
             {
-
                 _currentState--;
                 return true;
             }

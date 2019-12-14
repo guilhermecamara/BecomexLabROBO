@@ -7,9 +7,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace ROBOCommandInterface {
-    public class Program {
-        public static void Main(string[] args) {
+namespace ROBOCommandInterface
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
             CreateHostBuilder(args).Build().Run();
         }
 

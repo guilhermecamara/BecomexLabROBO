@@ -1,11 +1,10 @@
-﻿using ROBODomain.StateMachine;
+﻿using ROBODomain.GeneralInterfaces;
+using ROBODomain.RobotStateMachine;
 
 namespace ROBODomain.RobotParts
 {
-    public interface IBodyPart
-    {
-        string Identifier { get; set; }
-        IObservableStateMachine ObservableStateMachine { get; }
-        IObserverStateMachine ObserverStateMachine { get; }
+    public interface IBodyPart : Identity
+    {   
+
     }
 }

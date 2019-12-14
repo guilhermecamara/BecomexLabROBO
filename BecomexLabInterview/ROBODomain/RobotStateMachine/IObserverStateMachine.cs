@@ -1,4 +1,6 @@
-﻿namespace ROBODomain.StateMachine
+﻿using ROBODomain.RobotStateMachine.StateMachineStrategies;
+
+namespace ROBODomain.RobotStateMachine
 {
     public interface IObserverStateMachine
     {

@@ -1,6 +1,6 @@
-﻿namespace ROBODomain.StateMachine {
+﻿namespace ROBODomain.RobotStateMachine {
     public interface IStateMachine {
-        bool CanModify { get; }
+        bool CanModify { get; set; }
 
         IState GetState();
         bool Next();
