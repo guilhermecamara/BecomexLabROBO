@@ -1,7 +1,4 @@
-﻿using ROBODomain.RobotParts;
-using ROBODomain.RobotStateMachine;
-using ROBODomain.RobotStateMachine.StateMachineStrategies;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,8 +6,8 @@ namespace ROBODomain
 {
     public class RobotFabric
     {
-        public IRobot CreateRobot() {
-            var bodyParts = new List<IBodyPart>() {
+        public static IRobot CreateRobot() {
+            var bodyParts = new List<IBodyPartCollection>() {
                 CreateHead(),
                 CreateLeftArm(),
                 CreateRightArm()
@@ -19,18 +16,21 @@ namespace ROBODomain
             return new Robot(bodyParts);
         }
 
-        public IHead CreateHead() {
-            var headRotationUpdateStrategy = CreateHeadUpdateStrategy();
-            var headRotationStateMachine = CreateHeadRotationStateMachine();
-            var headRotationObserver = CreateObserverStateMachine(headRotationStateMachine, headRotationUpdateStrategy);
+        public static IHead CreateHead() {
+            var rotation = CreateRotation();
+            var inclination = CreateInclination();
 
-            var headInclinationStateMachine = CreateHeadInclinationStateMachine();
-            var headInclinationObservable = CreateObservableStateMachine(headInclinationStateMachine);
+            inclination.Attach(rotation);
 
-            return new Head(headInclinationObservable, headRotationObserver);
+            var bodyParts = new List<IBodyPart>() {
+                rotation,
+                inclination
+            };
+            
+            return new Head(bodyParts);
         }
 
-        public IArm CreateRightArm()
+        public static IArm CreateRightArm()
         {
             var arm = CreateArm();
             arm.BodySide = BodySideEnum.Right;
@@ -38,7 +38,7 @@ namespace ROBODomain
             return arm;
         }
 
-        public IArm CreateLeftArm()
+        public static IArm CreateLeftArm()
         {            
             var arm = CreateArm();
             arm.BodySide = BodySideEnum.Left;
@@ -46,29 +46,50 @@ namespace ROBODomain
             return arm;
         }
 
-        private IArm CreateArm()
+        private static IArm CreateArm()
         {
-            var armUpdateStrategy = CreateArmUpdateStrategy();
-            var wristStateMachine = CreateWristStateMachine();
-            var wristObserver = CreateObserverStateMachine(wristStateMachine, armUpdateStrategy);
+            var elbow = CreateElbow();
+            var wrist = CreateWrist();
 
-            var elbowStateMachine = CreateElbowStateMachine();
-            var elbowObservable = CreateObservableStateMachine(elbowStateMachine);
+            elbow.Attach(wrist);
 
-            return new Arm(elbowObservable, wristObserver);
-        }
-
-        public IObservableStateMachine CreateObservableStateMachine(IStateMachine stateMachine) {
+            var bodyParts = new List<IBodyPart>() {
+                elbow,
+                wrist
+            };
             
-            return new ObservableStateMachine(stateMachine);
+            return new Arm(bodyParts);
         }
 
-        public IObserverStateMachine CreateObserverStateMachine(IStateMachine stateMachine, IUpdateStrategy updateStrategy)
+        public static IObserverBodyPart CreateWrist()
         {
-            return new ObserverStateMachine(stateMachine, updateStrategy);
+            var wristStateMachine = CreateWristStateMachine();
+            var wristUpdateStrategy = CreateArmUpdateStrategy();
+
+            return new Wrist(wristStateMachine, wristUpdateStrategy);
         }
 
-        public IStateMachine CreateElbowStateMachine()
+        public static IObservableBodyPart CreateElbow()
+        {
+            var elbowStateMachine = CreateElbowStateMachine();
+            return new Elbow(elbowStateMachine);
+        }
+
+        public static IObserverBodyPart CreateRotation()
+        {
+            var rotationStateMachine = CreateHeadRotationStateMachine();
+            var rotationUpdateStrategy = CreateHeadUpdateStrategy();
+
+            return new Rotation(rotationStateMachine, rotationUpdateStrategy);
+        }
+
+        public static IObservableBodyPart CreateInclination()
+        {
+            var inclinationStateMachine = CreateHeadInclinationStateMachine();
+            return new Inclination(inclinationStateMachine);            
+        }
+
+        public static IStateMachine CreateElbowStateMachine()
         {
             var states = new List<IState>() {
                 CreateState(StateEnum.Resting),
@@ -80,7 +101,7 @@ namespace ROBODomain
             return new StateMachine(states);
         }
 
-        public IStateMachine CreateWristStateMachine()
+        public static IStateMachine CreateWristStateMachine()
         {
             var states = new List<IState>() {
                 CreateState(StateEnum.RotationOfMinus90Degrees),
@@ -95,7 +116,7 @@ namespace ROBODomain
             return new StateMachine(states);
         }
 
-        public IStateMachine CreateHeadRotationStateMachine()
+        public static IStateMachine CreateHeadRotationStateMachine()
         {
             var states = new List<IState>() {
                 CreateState(StateEnum.RotationOfMinus90Degrees),
@@ -108,7 +129,7 @@ namespace ROBODomain
             return new StateMachine(states);
         }
 
-        public IStateMachine CreateHeadInclinationStateMachine()
+        public static IStateMachine CreateHeadInclinationStateMachine()
         {
             var states = new List<IState>() {
                 CreateState(StateEnum.Upwards),
@@ -119,17 +140,17 @@ namespace ROBODomain
             return new StateMachine(states);
         }
 
-        public IState CreateState(StateEnum stateName) 
+        public static IState CreateState(StateEnum stateName) 
         {
             return new State() { StateName = stateName };
         }
 
-        public IUpdateStrategy CreateArmUpdateStrategy()
+        public static IUpdateStrategy CreateArmUpdateStrategy()
         {
             return new ArmUpdateStrategy();
         }
 
-        public IUpdateStrategy CreateHeadUpdateStrategy()
+        public static IUpdateStrategy CreateHeadUpdateStrategy()
         {
             return new HeadUpdateStrategy();
         }

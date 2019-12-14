@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ROBODomain", "ROBODomain\ROBODomain.csproj", "{629D7E5F-D592-485B-8E3B-356DC984F2DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROBOCommandInterface", "ROBOCommandInterface\ROBOCommandInterface.csproj", "{B197F494-9BC9-43F1-98EE-12B780FE2893}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ROBOCommandInterface", "ROBOCommandInterface\ROBOCommandInterface.csproj", "{03DBEA19-3794-4E72-A074-6BC0971A40A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{629D7E5F-D592-485B-8E3B-356DC984F2DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{629D7E5F-D592-485B-8E3B-356DC984F2DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{629D7E5F-D592-485B-8E3B-356DC984F2DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B197F494-9BC9-43F1-98EE-12B780FE2893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B197F494-9BC9-43F1-98EE-12B780FE2893}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B197F494-9BC9-43F1-98EE-12B780FE2893}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B197F494-9BC9-43F1-98EE-12B780FE2893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DBEA19-3794-4E72-A074-6BC0971A40A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DBEA19-3794-4E72-A074-6BC0971A40A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DBEA19-3794-4E72-A074-6BC0971A40A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DBEA19-3794-4E72-A074-6BC0971A40A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,26 @@
+﻿@using ROBODomain;
+@using Newtonsoft.Json;
+
+@model IRobot
+
+@{
+    ViewData["Title"] = "R.O.B.O Controller Interface";
+}
+
+<div class="text-center">
+    <h1 class="display-4">R.O.B.O is Online</h1>
+
+    <pre>
+        @JsonConvert.SerializeObject(Model)
+    </pre>
+
+    @foreach (var part in Model.BodyPartCollection)
+    {
+        <div class="row">
+            <h4>@part.Name</h4>
+
+            
+        </div>
+    }
+
+</div>
