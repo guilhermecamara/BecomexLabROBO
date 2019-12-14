@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ROBODomain {
+namespace ROBO.Core {
     public class State : IState
     {
-        public StateEnum StateName { get ; set; }
+        public StateEnum StateEnum { get ; set; }
     }
 }

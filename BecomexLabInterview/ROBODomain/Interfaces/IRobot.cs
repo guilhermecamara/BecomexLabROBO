@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ROBODomain
+namespace ROBO.Core
 {
     public interface IRobot
     {

@@ -1,6 +1,6 @@
-﻿namespace ROBODomain {
+﻿namespace ROBO.Core {
     public interface IState 
     {
-        StateEnum StateName { get; set; }
+        StateEnum StateEnum { get; set; }
     }
 }

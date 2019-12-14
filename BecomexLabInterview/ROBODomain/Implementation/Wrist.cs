@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ROBODomain
+namespace ROBO.Core
 {
     public class Wrist : IObserverBodyPart
     {

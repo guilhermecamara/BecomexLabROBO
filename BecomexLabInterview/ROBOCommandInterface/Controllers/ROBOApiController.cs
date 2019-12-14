@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ROBOCommandInterface.Models;
-using ROBODomain;
+using ROBO.Core;
 
 namespace ROBOCommandInterface.Controllers
 {
@@ -25,12 +25,17 @@ namespace ROBOCommandInterface.Controllers
                 if (string.IsNullOrEmpty(value))
                 {
                     robot = RobotFabric.CreateRobot();
-                    var serialisedDate = JsonConvert.SerializeObject(robot);
+                    var serialisedDate = JsonConvert.SerializeObject(robot, RobotFabric.GetRobotType(), new JsonSerializerSettings() {
+                        TypeNameHandling = TypeNameHandling.Auto,
+                        
+                    });
                     HttpContext.Session.SetString(sessionKey, serialisedDate);
                 }
                 else
                 {
-                    robot = JsonConvert.DeserializeObject<IRobot>(value);
+                    robot = JsonConvert.DeserializeObject<Robot>(value, new JsonSerializerSettings() {
+                        TypeNameHandling = TypeNameHandling.Auto
+                    });
                 }
 
                 return robot;

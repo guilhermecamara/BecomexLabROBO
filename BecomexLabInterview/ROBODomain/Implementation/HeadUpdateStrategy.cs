@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ROBODomain
+namespace ROBO.Core
 {
     public class HeadUpdateStrategy : IUpdateStrategy
     {
         public void Update(IBodyPart observable, IBodyPart context)
         {
-            if (observable.StateMachine.GetState().StateName != StateEnum.Downwards)
+            if (observable.StateMachine.GetState().StateEnum != StateEnum.Downwards)
             {
                 context.StateMachine.CanModify = true;
             }

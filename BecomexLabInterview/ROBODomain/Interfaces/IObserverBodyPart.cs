@@ -1,5 +1,5 @@
 ﻿
-namespace ROBODomain
+namespace ROBO.Core
 {
     public interface IObserverBodyPart : IBodyPart
     {

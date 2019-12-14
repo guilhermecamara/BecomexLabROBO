@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ROBODomain
+namespace ROBO.Core
 {
     public class RobotFabric
     {
+        public static Type GetRobotType()
+        {
+            return typeof(Robot);
+        }
+
         public static IRobot CreateRobot() {
             var bodyParts = new List<IBodyPartCollection>() {
                 CreateHead(),
@@ -36,7 +41,7 @@ namespace ROBODomain
             arm.BodySide = BodySideEnum.Right;
 
             return arm;
-        }
+        }       
 
         public static IArm CreateLeftArm()
         {            
@@ -98,7 +103,9 @@ namespace ROBODomain
                 CreateState(StateEnum.StronglyContracted)
             };
 
-            return new StateMachine(states);
+            var elbowStateMachine = new StateMachine();
+            elbowStateMachine.SetStates(states);
+            return elbowStateMachine;
         }
 
         public static IStateMachine CreateWristStateMachine()
@@ -113,7 +120,9 @@ namespace ROBODomain
                 CreateState(StateEnum.RotationOf180Degrees)
             };
 
-            return new StateMachine(states);
+            var wristStateMachine = new StateMachine();
+            wristStateMachine.SetStates(states);
+            return wristStateMachine;
         }
 
         public static IStateMachine CreateHeadRotationStateMachine()
@@ -126,7 +135,9 @@ namespace ROBODomain
                 CreateState(StateEnum.RotationOf90Degrees)
             };
 
-            return new StateMachine(states);
+            var rotationStateMachine = new StateMachine();
+            rotationStateMachine.SetStates(states);
+            return rotationStateMachine;
         }
 
         public static IStateMachine CreateHeadInclinationStateMachine()
@@ -137,12 +148,14 @@ namespace ROBODomain
                 CreateState(StateEnum.Downwards)
             };
 
-            return new StateMachine(states);
+            var inclinationStateMachine = new StateMachine();
+            inclinationStateMachine.SetStates(states);
+            return inclinationStateMachine;
         }
 
         public static IState CreateState(StateEnum stateName) 
         {
-            return new State() { StateName = stateName };
+            return new State() { StateEnum = stateName };
         }
 
         public static IUpdateStrategy CreateArmUpdateStrategy()

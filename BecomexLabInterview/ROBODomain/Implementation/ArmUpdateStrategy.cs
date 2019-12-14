@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ROBODomain
+namespace ROBO.Core
 {
     public class ArmUpdateStrategy : IUpdateStrategy
     {
         public void Update(IBodyPart observable, IBodyPart context)
         {
-            if (observable.StateMachine.GetState().StateName == StateEnum.StronglyContracted)
+            if (observable.StateMachine.GetState().StateEnum == StateEnum.StronglyContracted)
             {
                 context.StateMachine.CanModify = true;
             }

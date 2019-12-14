@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ROBODomain {
+namespace ROBO.Core {
     public class Robot : IRobot
     {        
         public IEnumerable<IBodyPartCollection> BodyPartCollection { get; }
