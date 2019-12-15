@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ROBO.Api.Models;
 using ROBO.Core;
 using ROBO.Core.Entities;
@@ -18,12 +19,12 @@ namespace ROBO.Api.Controllers
 {
     public class ROBOApiController : Controller
     {
-        const string sessionKey = "Robot";        
+        const string sessionKey = "Robot";
 
         private IRobot Robot
         {
             get
-            {                
+            {
                 IRobot robot;
                 var value = HttpContext.Session.GetString(sessionKey);
                 if (string.IsNullOrEmpty(value))
@@ -31,7 +32,7 @@ namespace ROBO.Api.Controllers
                     robot = RobotFabric.CreateDefaultRobot();
                     var serialisedDate = JsonConvert.SerializeObject(robot, new JsonSerializerSettings() {
                         TypeNameHandling = TypeNameHandling.Auto,
-                        
+
                     });
                     HttpContext.Session.SetString(sessionKey, serialisedDate);
                 }
@@ -44,35 +45,49 @@ namespace ROBO.Api.Controllers
 
                 return robot;
             }
+            set 
+            {
+                var serialisedDate = JsonConvert.SerializeObject(value, new JsonSerializerSettings() {
+                    TypeNameHandling = TypeNameHandling.Auto,
+
+                });
+                HttpContext.Session.SetString(sessionKey, serialisedDate);
+            }
         }
 
         public IActionResult Index()
         {
             return View(Robot);
-        }
+        }        
 
-        public JsonResult NextStateOfBodyPart(string bodyPartCollectionId, string bodyPartId)
+        [HttpPost]
+        public JsonResult NextStateOfBodyPart([FromBody] ChangeStateViewModel changeState)
         {
-            var request = new RequestNextStateOfBodyPartInteractor(Robot);
+            var robot = Robot;
+            var request = new RequestNextStateOfBodyPartInteractor(robot);
 
-            var requestMessage = new NextStateOfBodyPartRequestMessage(bodyPartCollectionId, bodyPartId);
+            var requestMessage = new NextStateOfBodyPartRequestMessage(changeState.BodyPartCollectionId, changeState.BodyPartId);
 
             var responseTask = request.Handle(requestMessage, CancellationToken.None);
 
             responseTask.Wait();
+            Robot = robot;
 
             return Json(responseTask.Result.Success);
         }
 
-        public JsonResult PreviousStateOfBodyPart(string bodyPartCollectionId, string bodyPartId)
+        [HttpPost]
+        public JsonResult PreviousStateOfBodyPart([FromBody] ChangeStateViewModel changeState)
         {
-            var request = new RequestPreviousStateOfBodyPartInteractor(Robot);
+            var robot = Robot;
+            var request = new RequestPreviousStateOfBodyPartInteractor(robot);
 
-            var requestMessage = new PreviousStateOfBodyPartRequestMessage(bodyPartCollectionId, bodyPartId);
+            var requestMessage = new PreviousStateOfBodyPartRequestMessage(changeState.BodyPartCollectionId, changeState.BodyPartId);
 
             var responseTask = request.Handle(requestMessage, CancellationToken.None);
 
             responseTask.Wait();
+            Robot = robot;
 
             return Json(responseTask.Result.Success);
         }

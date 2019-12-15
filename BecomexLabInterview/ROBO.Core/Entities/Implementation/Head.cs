@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Head : EntityBase, IHead
-    {                
+    public class Head : IHead
+    {
+        public string Id { get; set; }
         public string Name
         {
             get

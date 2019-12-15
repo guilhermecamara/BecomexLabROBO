@@ -4,9 +4,10 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Elbow : EntityBase, IObservableBodyPart
+    public class Elbow : IObservableBodyPart
     {
         private IList<IObserverBodyPart> _subjects { get; set; } = new List<IObserverBodyPart>();
+        public string Id { get; set; }
         public string Name
         {
             get

@@ -28,8 +28,8 @@ namespace ROBO.Infrastructure
                 inclination
             };
             
-            return new Head(bodyParts);
-        }
+            return new Head(bodyParts) { Id = GenerateGuidId() };
+        }        
 
         public static IArm CreateRightArm()
         {
@@ -58,8 +58,8 @@ namespace ROBO.Infrastructure
                 elbow,
                 wrist
             };
-            
-            return new Arm(bodyParts);
+
+            return new Arm(bodyParts) { Id = GenerateGuidId() };
         }
 
         public static IObserverBodyPart CreateWrist()
@@ -67,13 +67,13 @@ namespace ROBO.Infrastructure
             var wristStateMachine = CreateWristStateMachine();
             var wristUpdateStrategy = CreateArmUpdateStrategy();
 
-            return new Wrist(wristStateMachine, wristUpdateStrategy);
+            return new Wrist(wristStateMachine, wristUpdateStrategy) { Id = GenerateGuidId() };
         }
 
         public static IObservableBodyPart CreateElbow()
         {
             var elbowStateMachine = CreateElbowStateMachine();
-            return new Elbow(elbowStateMachine);
+            return new Elbow(elbowStateMachine) { Id = GenerateGuidId() };
         }
 
         public static IObserverBodyPart CreateRotation()
@@ -81,13 +81,13 @@ namespace ROBO.Infrastructure
             var rotationStateMachine = CreateHeadRotationStateMachine();
             var rotationUpdateStrategy = CreateHeadUpdateStrategy();
 
-            return new Rotation(rotationStateMachine, rotationUpdateStrategy);
+            return new Rotation(rotationStateMachine, rotationUpdateStrategy) { Id = GenerateGuidId() };
         }
 
         public static IObservableBodyPart CreateInclination()
         {
             var inclinationStateMachine = CreateHeadInclinationStateMachine();
-            return new Inclination(inclinationStateMachine);            
+            return new Inclination(inclinationStateMachine) { Id = GenerateGuidId() };
         }
 
         public static IStateMachine CreateElbowStateMachine()
@@ -162,6 +162,11 @@ namespace ROBO.Infrastructure
         public static IUpdateStrategy CreateHeadUpdateStrategy()
         {
             return new HeadUpdateStrategy();
+        }
+
+        private static string GenerateGuidId()
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }

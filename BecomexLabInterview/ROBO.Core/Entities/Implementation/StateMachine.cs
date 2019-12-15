@@ -8,7 +8,7 @@ namespace ROBO.Core.Entities {
     {
         public int CurrentState { get; set; }
         public IEnumerable<IState> States { get; set; }
-        public bool CanModify { get; set; }
+        public bool CanModify { get; set; } = true;
 
         /// <summary>
         // If the resting state is not provided in the states list, throws an exception.

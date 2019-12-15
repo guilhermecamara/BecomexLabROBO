@@ -5,8 +5,9 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Arm : EntityBase, IArm
-    {        
+    public class Arm : IArm
+    {
+        public string Id { get; set; }
         public BodySideEnum BodySide { get ; set; }
         public string Name
         {

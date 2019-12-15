@@ -4,9 +4,10 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Rotation : EntityBase, IObserverBodyPart
+    public class Rotation : IObserverBodyPart
     {
         private IUpdateStrategy _updateStrategy { get; set; }
+        public string Id { get; set; }
         public string Name
         {
             get

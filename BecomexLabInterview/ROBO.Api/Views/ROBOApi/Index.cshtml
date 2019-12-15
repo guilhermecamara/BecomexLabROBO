@@ -25,12 +25,14 @@
                         <div class="mt-2">
                             <div class="btn-group btn-group-sm">
                                 @{
+                                    var disabled = subPart.StateMachine.CanModify ? "" : "disabled";
+
                                     var firstDisabled = subPart.StateMachine.GetState().StateEnum == subPart.StateMachine.States.First().StateEnum ? "disabled" : "";
                                     var lastDisabled = subPart.StateMachine.GetState().StateEnum == subPart.StateMachine.States.Last().StateEnum ? "disabled" : "";
                                 }
                                 <button type="button" class="btn btn-secondary disabled">@subPart.Name</button>
-                                <button type="button" class="btn btn-primary @firstDisabled"><i class="fa fa-arrow-up"></i></button>
-                                <button type="button" class="btn btn-primary @lastDisabled"><i class="fa fa-arrow-down"></i></button>
+                                <button type="button" class="btn btn-primary @disabled @firstDisabled previousState" data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-up"></i></button>
+                                <button type="button" class="btn btn-primary @disabled @lastDisabled nextState" data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-down"></i></button>
                             </div>
                         </div>
 
@@ -39,8 +41,7 @@
 
                                 @foreach (var state in subPart.StateMachine.States)
                                 {
-                                    var active = state == subPart.StateMachine.GetState() ? "active" : "";
-                                    var disabled = subPart.StateMachine.CanModify ? "" : "disabled";
+                                    var active = state == subPart.StateMachine.GetState() ? "active" : "";                                    
 
                                     <li class="py-1 list-group-item list-group-item-action @active @disabled">@state.StateEnum.GetDescription()</li>
                                 }
@@ -53,3 +54,71 @@
         }
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        
+        $(document).ready(function () {
+            $("button.nextState").on("click", function () {
+                let bodyPartCollectionId = getBodyPartCollectionId($(this));
+                let bodyPartId = getBodyPartId($(this));
+
+                nextStateOfBodyPart(bodyPartCollectionId, bodyPartId);
+            });
+
+            $("button.previousState").on("click", function () {
+                let bodyPartCollectionId = getBodyPartCollectionId($(this));
+                let bodyPartId = getBodyPartId($(this));
+
+                previousStateOfBodyPart(bodyPartCollectionId, bodyPartId);
+            });
+        });
+
+        function getBodyPartCollectionId($btn) {
+            return $btn.attr('data-body-part-collection-id');
+        }
+
+        function getBodyPartId($btn) {
+            return $btn.attr('data-body-part-id');
+        }
+
+        function nextStateOfBodyPart(bodyPartCollectionId, bodyPartId) {
+            var data = JSON.stringify({ bodyPartCollectionId: bodyPartCollectionId, bodyPartId: bodyPartId });
+
+            $.ajax({
+                type: "POST",
+                url: "/ROBOApi/NextStateOfBodyPart",
+                contentType: "application/json",                
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        window.location.href = window.location.href;
+                    } else {
+                        alert("Invalid");
+                    }
+                }
+            });
+        }
+
+        function previousStateOfBodyPart(bodyPartCollectionId, bodyPartId) {
+            var data = JSON.stringify({ bodyPartCollectionId: bodyPartCollectionId, bodyPartId: bodyPartId });
+
+            $.ajax({
+                type: "POST",
+                url: "/ROBOApi/PreviousStateOfBodyPart",
+                contentType: "application/json",                
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    if (data) {
+                        window.location.href = window.location.href;
+                    } else {
+                        alert("Invalid");
+                    }
+                }
+            });
+        }
+
+    </script>
+}
