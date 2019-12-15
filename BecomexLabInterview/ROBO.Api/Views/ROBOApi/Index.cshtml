@@ -25,23 +25,23 @@
                         <div class="mt-2">
                             <div class="btn-group btn-group-sm">
                                 @{
-                                    var disabled = subPart.StateMachine.CanModify ? "" : "disabled";
+                                    var disabled = subPart.CanModify ? "" : "disabled";
 
-                                    var firstDisabled = subPart.StateMachine.GetState().StateEnum == subPart.StateMachine.States.First().StateEnum ? "disabled" : "";
-                                    var lastDisabled = subPart.StateMachine.GetState().StateEnum == subPart.StateMachine.States.Last().StateEnum ? "disabled" : "";
+                                    var firstDisabled = subPart.GetState().StateEnum == subPart.States.First().StateEnum ? "disabled" : "";
+                                    var lastDisabled = subPart.GetState().StateEnum == subPart.States.Last().StateEnum ? "disabled" : "";
                                 }
                                 <button type="button" class="btn btn-secondary disabled">@subPart.Name</button>
-                                <button type="button" class="btn btn-primary @disabled @firstDisabled previousState" data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-up"></i></button>
-                                <button type="button" class="btn btn-primary @disabled @lastDisabled nextState" data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-down"></i></button>
+                                <button type="button" class="btn btn-primary @disabled @firstDisabled previousState" @disabled @firstDisabled data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-up"></i></button>
+                                <button type="button" class="btn btn-primary @disabled @lastDisabled nextState" @disabled @lastDisabled data-body-part-collection-id="@part.Id" data-body-part-id="@subPart.Id"><i class="fa fa-arrow-down"></i></button>
                             </div>
                         </div>
 
                         <div class="mt-4">
                             <ul class="list-group">
 
-                                @foreach (var state in subPart.StateMachine.States)
+                                @foreach (var state in subPart.States)
                                 {
-                                    var active = state == subPart.StateMachine.GetState() ? "active" : "";                                    
+                                    var active = state == subPart.GetState() ? "active" : "";                                    
 
                                     <li class="py-1 list-group-item list-group-item-action @active @disabled">@state.StateEnum.GetDescription()</li>
                                 }

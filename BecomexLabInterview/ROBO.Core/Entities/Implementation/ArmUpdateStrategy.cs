@@ -8,13 +8,13 @@ namespace ROBO.Core.Entities
     {
         public void Update(IBodyPart observable, IBodyPart context)
         {
-            if (observable.StateMachine.GetState().StateEnum == StateEnum.StronglyContracted)
+            if (observable.GetState().StateEnum == StateEnum.StronglyContracted)
             {
-                context.StateMachine.CanModify = true;
+                context.CanModify = true;
             }
             else
             { 
-                context.StateMachine.CanModify = false;
+                context.CanModify = false;
             }
         }
     }

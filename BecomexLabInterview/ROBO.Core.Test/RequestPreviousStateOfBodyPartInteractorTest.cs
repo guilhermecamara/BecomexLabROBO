@@ -16,7 +16,8 @@ namespace ROBO.Core.Test
             return new State() { StateEnum = stateName };
         }
 
-        public StateMachine CreateTestStateMachine() {
+        public List<IState> CreateTestListStates()
+        {
 
             var states = new List<IState>() {
                 CreateTestState(StateEnum.SlighlyContracted),
@@ -25,18 +26,18 @@ namespace ROBO.Core.Test
                 CreateTestState(StateEnum.Resting)
             };
 
-            var testStateMachine = new StateMachine();
-            testStateMachine.SetStates(states);
-
-            return testStateMachine;
+            return states;
         }
 
         [Fact]
         public void Handle_CanModify_Test()
         {
             //arrange            
-            var inclination = new Inclination(CreateTestStateMachine());
-            inclination.StateMachine.CanModify = true;
+            var states = CreateTestListStates();
+            var inclination = new Inclination();
+
+            inclination.SetStates(states);
+            inclination.CanModify = true;
 
             var head = new Head(new List<IBodyPart>() {
                 inclination
@@ -65,8 +66,11 @@ namespace ROBO.Core.Test
         public void Handle_CanModify_Test1()
         {
             //arrange
-            var inclination = new Inclination(CreateTestStateMachine());
-            inclination.StateMachine.CanModify = false;
+            var states = CreateTestListStates();
+            var inclination = new Inclination();
+
+            inclination.SetStates(states);
+            inclination.CanModify = false;
 
             var head = new Head(new List<IBodyPart>() {
                 inclination
@@ -94,11 +98,13 @@ namespace ROBO.Core.Test
         [Fact]
         public void Handle_LastState_Test1()
         {
-            //arrange            
-            var stateMachine = CreateTestStateMachine();
-            stateMachine.CurrentState = 0;
+            //arrange
+            var states = CreateTestListStates();
+            var inclination = new Inclination();
 
-            var inclination = new Inclination(stateMachine);
+            inclination.SetStates(states);
+            inclination.CanModify = true;
+            inclination.CurrentState = 0;
 
             var head = new Head(new List<IBodyPart>() {
                 inclination

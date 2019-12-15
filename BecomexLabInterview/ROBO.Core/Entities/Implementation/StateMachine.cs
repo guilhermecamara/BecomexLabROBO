@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace ROBO.Core.Entities {
-    public class StateMachine : IStateMachine 
+    public abstract class StateMachine : IStateMachine 
     {
         public int CurrentState { get; set; }
         public IEnumerable<IState> States { get; set; }
@@ -28,7 +28,7 @@ namespace ROBO.Core.Entities {
             return States.ElementAt(CurrentState);
         }
 
-        public bool Next() 
+        public virtual bool Next() 
         {
             if (CanModify && CurrentState < States.Count() - 1) {
 
@@ -39,7 +39,7 @@ namespace ROBO.Core.Entities {
             return false;
         }
 
-        public bool Previous() 
+        public virtual bool Previous() 
         {
             if (CanModify && CurrentState > 0) 
             {

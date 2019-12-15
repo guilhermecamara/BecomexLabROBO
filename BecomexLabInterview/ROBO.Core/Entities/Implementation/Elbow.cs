@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Elbow : IObservableBodyPart
+    public class Elbow : StateMachine, IObservableBodyPart
     {
         private IList<IObserverBodyPart> _subjects { get; set; } = new List<IObserverBodyPart>();
         public string Id { get; set; }
@@ -14,13 +14,7 @@ namespace ROBO.Core.Entities
             {
                 return $"Elbow";
             }
-        }
-        public IStateMachine StateMachine { get; }
-
-        public Elbow(IStateMachine stateMachine)
-        {
-            StateMachine = stateMachine;
-        }        
+        }    
 
         public void Attach(IObserverBodyPart subject)
         {
@@ -39,6 +33,22 @@ namespace ROBO.Core.Entities
             {
                 subject.Update(this);
             }
+        }
+
+        public override bool Previous()
+        {
+            var output = base.Previous();
+            Notify();
+
+            return output;
+        }
+
+        public override bool Next()
+        {
+            var output = base.Next();
+            Notify();
+
+            return output;
         }
     }
 }

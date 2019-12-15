@@ -2,10 +2,8 @@
 
 namespace ROBO.Core.Entities
 {
-    public interface IBodyPart : IEntity
+    public interface IBodyPart : IStateMachine, IEntity
     {   
         string Name { get; }
-
-        IStateMachine StateMachine { get; }
     }
 }

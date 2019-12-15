@@ -8,13 +8,13 @@ namespace ROBO.Core.Entities
     {
         public void Update(IBodyPart observable, IBodyPart context)
         {
-            if (observable.StateMachine.GetState().StateEnum != StateEnum.Downwards)
+            if (observable.GetState().StateEnum != StateEnum.Downwards)
             {
-                context.StateMachine.CanModify = true;
+                context.CanModify = true;
             }
             else 
             {
-                context.StateMachine.CanModify = false;
+                context.CanModify = false;
             }
         }
     }

@@ -7,6 +7,14 @@ namespace ROBO.Infrastructure
 {
     public class RobotFabric
     {
+        // Mantem o robo padrão em memoria de aplicação enquanto nao existe algum tipo de persistencia
+        private static IRobot Robot { get; set; } = RobotFabric.CreateDefaultRobot();
+
+        public static IRobot GetDefaultRobot()
+        {
+            return Robot;
+        }
+
         public static IRobot CreateDefaultRobot() {
             var bodyParts = new List<IBodyPartCollection>() {
                 CreateHead(),
@@ -64,49 +72,60 @@ namespace ROBO.Infrastructure
 
         public static IObserverBodyPart CreateWrist()
         {
-            var wristStateMachine = CreateWristStateMachine();
+            var wristStateMachine = CreateWristStateList();
             var wristUpdateStrategy = CreateArmUpdateStrategy();
 
-            return new Wrist(wristStateMachine, wristUpdateStrategy) { Id = GenerateGuidId() };
+            var wrist = new Wrist(wristUpdateStrategy) { Id = GenerateGuidId() };
+
+            wrist.SetStates(wristStateMachine);
+
+            return wrist;
         }
 
         public static IObservableBodyPart CreateElbow()
         {
-            var elbowStateMachine = CreateElbowStateMachine();
-            return new Elbow(elbowStateMachine) { Id = GenerateGuidId() };
+            var elbowStateMachine = CreateElbowStateList();
+            var elbow = new Elbow() { Id = GenerateGuidId() };
+
+            elbow.SetStates(elbowStateMachine);
+
+            return elbow;
         }
 
         public static IObserverBodyPart CreateRotation()
         {
-            var rotationStateMachine = CreateHeadRotationStateMachine();
+            var rotationStateMachine = CreateHeadRotationStateList();
             var rotationUpdateStrategy = CreateHeadUpdateStrategy();
 
-            return new Rotation(rotationStateMachine, rotationUpdateStrategy) { Id = GenerateGuidId() };
+            var rotation = new Rotation(rotationUpdateStrategy) { Id = GenerateGuidId() };
+            rotation.SetStates(rotationStateMachine);
+
+            return rotation;
         }
 
         public static IObservableBodyPart CreateInclination()
         {
-            var inclinationStateMachine = CreateHeadInclinationStateMachine();
-            return new Inclination(inclinationStateMachine) { Id = GenerateGuidId() };
+            var inclinationStateMachine = CreateHeadInclinationStateList();
+            var rotation = new Inclination() { Id = GenerateGuidId() };
+
+            rotation.SetStates(inclinationStateMachine);
+
+            return rotation;
         }
 
-        public static IStateMachine CreateElbowStateMachine()
+        public static List<IState> CreateElbowStateList()
         {
-            var states = new List<IState>() {
+            return new List<IState>() {
                 CreateState(StateEnum.Resting),
                 CreateState(StateEnum.SlighlyContracted),
                 CreateState(StateEnum.Contracted),
                 CreateState(StateEnum.StronglyContracted)
             };
-
-            var elbowStateMachine = new StateMachine();
-            elbowStateMachine.SetStates(states);
-            return elbowStateMachine;
         }
 
-        public static IStateMachine CreateWristStateMachine()
+        public static List<IState> CreateWristStateList()
         {
-            var states = new List<IState>() {
+            return new List<IState>() {
                 CreateState(StateEnum.RotationOfMinus90Degrees),
                 CreateState(StateEnum.RotationOfMinus45Degrees),
                 CreateState(StateEnum.Resting),
@@ -115,38 +134,26 @@ namespace ROBO.Infrastructure
                 CreateState(StateEnum.RotationOf135Degrees),
                 CreateState(StateEnum.RotationOf180Degrees)
             };
-
-            var wristStateMachine = new StateMachine();
-            wristStateMachine.SetStates(states);
-            return wristStateMachine;
         }
 
-        public static IStateMachine CreateHeadRotationStateMachine()
+        public static List<IState> CreateHeadRotationStateList()
         {
-            var states = new List<IState>() {
+            return new List<IState>() {
                 CreateState(StateEnum.RotationOfMinus90Degrees),
                 CreateState(StateEnum.RotationOfMinus45Degrees),
                 CreateState(StateEnum.Resting),
                 CreateState(StateEnum.RotationOf45Degrees),
                 CreateState(StateEnum.RotationOf90Degrees)
             };
-
-            var rotationStateMachine = new StateMachine();
-            rotationStateMachine.SetStates(states);
-            return rotationStateMachine;
         }
 
-        public static IStateMachine CreateHeadInclinationStateMachine()
+        public static List<IState> CreateHeadInclinationStateList()
         {
-            var states = new List<IState>() {
+            return new List<IState>() {
                 CreateState(StateEnum.Upwards),
                 CreateState(StateEnum.Resting),
                 CreateState(StateEnum.Downwards)
             };
-
-            var inclinationStateMachine = new StateMachine();
-            inclinationStateMachine.SetStates(states);
-            return inclinationStateMachine;
         }
 
         public static IState CreateState(StateEnum stateName) 

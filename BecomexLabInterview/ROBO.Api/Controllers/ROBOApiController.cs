@@ -21,40 +21,8 @@ namespace ROBO.Api.Controllers
     {
         const string sessionKey = "Robot";
 
-        private IRobot Robot
-        {
-            get
-            {
-                IRobot robot;
-                var value = HttpContext.Session.GetString(sessionKey);
-                if (string.IsNullOrEmpty(value))
-                {
-                    robot = RobotFabric.CreateDefaultRobot();
-                    var serialisedDate = JsonConvert.SerializeObject(robot, new JsonSerializerSettings() {
-                        TypeNameHandling = TypeNameHandling.Auto,
-
-                    });
-                    HttpContext.Session.SetString(sessionKey, serialisedDate);
-                }
-                else
-                {
-                    robot = JsonConvert.DeserializeObject<Robot>(value, new JsonSerializerSettings() {
-                        TypeNameHandling = TypeNameHandling.Auto
-                    });
-                }
-
-                return robot;
-            }
-            set 
-            {
-                var serialisedDate = JsonConvert.SerializeObject(value, new JsonSerializerSettings() {
-                    TypeNameHandling = TypeNameHandling.Auto,
-
-                });
-                HttpContext.Session.SetString(sessionKey, serialisedDate);
-            }
-        }
-
+        public IRobot Robot { get; set; } = RobotFabric.GetDefaultRobot();
+        
         public IActionResult Index()
         {
             return View(Robot);

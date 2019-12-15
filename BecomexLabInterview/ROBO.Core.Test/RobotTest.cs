@@ -12,7 +12,7 @@ namespace ROBO.Core.Test
         public void GetBodyPart_Test()
         {
             //arrange
-            var inclination = new Inclination(null);
+            var inclination = new Inclination();
 
             var head = new Head(new List<IBodyPart>() {
                 inclination
@@ -34,7 +34,7 @@ namespace ROBO.Core.Test
         public void GetBodyPart_Test_1()
         {
             //arrange
-            var inclination = new Inclination(null);
+            var inclination = new Inclination();
 
             var head = new Head(new List<IBodyPart>());
 

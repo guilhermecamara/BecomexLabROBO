@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Wrist : IObserverBodyPart
+    public class Wrist : StateMachine, IObserverBodyPart
     {
         private IUpdateStrategy _updateStrategy { get; set; }
         public string Id { get; set; }
@@ -15,11 +15,8 @@ namespace ROBO.Core.Entities
                 return $"Wirst";
             }
         }
-        public IStateMachine StateMachine { get; }
-
-        public Wrist(IStateMachine stateMachine, IUpdateStrategy updateStrategy)
-        {
-            StateMachine = stateMachine;
+        public Wrist(IUpdateStrategy updateStrategy)
+        {            
             _updateStrategy = updateStrategy;
         }
 

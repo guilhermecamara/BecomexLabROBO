@@ -20,7 +20,7 @@ namespace ROBO.Core.Entities {
 
             if (bodyPart != null)
             {
-                return bodyPart.StateMachine.Next();
+                return bodyPart.Next();
             }
 
             return false;
@@ -32,7 +32,7 @@ namespace ROBO.Core.Entities {
 
             if (bodyPart != null)
             {
-                return bodyPart.StateMachine.Previous();
+                return bodyPart.Previous();
             }
 
             return false;

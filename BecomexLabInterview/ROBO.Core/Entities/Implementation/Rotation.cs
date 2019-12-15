@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ROBO.Core.Entities
 {
-    public class Rotation : IObserverBodyPart
+    public class Rotation : StateMachine, IObserverBodyPart
     {
         private IUpdateStrategy _updateStrategy { get; set; }
         public string Id { get; set; }
@@ -14,12 +14,10 @@ namespace ROBO.Core.Entities
             {
                 return $"Rotation";
             }
-        }
-        public IStateMachine StateMachine { get; }        
+        }        
 
-        public Rotation(IStateMachine stateMachine, IUpdateStrategy updateStrategy)
-        {
-            StateMachine = stateMachine;
+        public Rotation(IUpdateStrategy updateStrategy)
+        {            
             _updateStrategy = updateStrategy;
         }        
 
